@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>todo_list_es6</title>
+</head>
+<body>
+    <style>.btn[disabled]{cursor: not-allowed}</style>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Todo List ES6</a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row justify-content-center" style="margin-top:100px">
+            <div class="col-md-10">
+                <button class="btn btn-primary" id="undo" onclick="undo()"><<</button>
+                <button class="btn btn-primary" id="redo" onclick="redo()">>></button>
+                <hr>
+                <form id="myForm" onsubmit="event.preventDefault()">
+                    <div class="input-group">
+                        <input type="text" id="name" class="form-control" placeholder="Enter new task">
+                        <input type="date" id="date" class="form-control">
+                        <input type="time" id="time" class="form-control col-md-2">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" onclick=toDo.addTodo(event)>
+                                + Add
+                            </button>
+                        </div>
+                    </div>
+                    <p id="errMessage" class="text-danger"></p>
+                </form>
+                <p id="count"></p>
+                 <table class="table table-bordered table-inverse mt-2">
+                     <thead class="thead-light">
+                         <tr>
+                             <th width="15%">Is important</th>
+                             <th>Name</th>
+                             <th>Date</th>
+                             <th>Time</th>
+                             <th>Status</th>
+                             <th width="5%">Actions</th>
+                         </tr>
+                         </thead>
+                         <tbody id="taskList"></tbody>
+                 </table>
+            </div>
+        </div>
+    </div>
+<script src="main.js"></script></body>
+</html>
+ 
