@@ -1,16 +1,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap'
-import Todo from './dom.js'
-import {undo,redo} from './undoRedo.js'
-let toDo = new Todo()
-window.toDo = toDo
-window.undo = undo
-window.redo = redo
-
-//remove the item newTask whene reload the page
-localStorage.removeItem("NewTasks")
-localStorage.removeItem("NewTasksTemporary")
-
-//add the disable to undo button
-document.getElementById('undo').disabled = true
-document.getElementById('redo').disabled = true
+import TodoClass from './Dom.js'
+import UndoRedoClass from './UndoRedo.js'
+let Todo = new TodoClass()
+window.Todo = Todo
+let UndoRedo = new UndoRedoClass()
+window.UndoRedo = UndoRedo
+// remove undo redo items whene reload the page because we only use it if there are changes
+window.onload = function () {
+    localStorage.removeItem("tasks_undo");
+    localStorage.removeItem("tasks_redo");
+};

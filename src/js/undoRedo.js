@@ -1,46 +1,59 @@
-import todoStat from './stats'
-export  function undo(){    
-      let tasks = JSON.parse(localStorage.getItem('TASKS')) ? JSON.parse(localStorage.getItem('TASKS')) : []
-      let newTasks = JSON.parse(localStorage.getItem('NewTasks')) ? JSON.parse(localStorage.getItem('NewTasks')) :[] 
-      let NewTasksTemporary = JSON.parse(localStorage.getItem('NewTasksTemporary')) 
-      
-      document.getElementById('redo').disabled = false 
-      newTasks.unshift({
-      name : tasks[0].name, 
-      date : tasks[0].date, 
-      time : tasks[0].time, 
-      isImportant : tasks[0].isImportant, 
-      status : tasks[0].status, 
-    })
-    localStorage.setItem('NewTasks', JSON.stringify(newTasks))    
-    tasks.splice(0,1)
-    localStorage.setItem('TASKS', JSON.stringify(tasks))
-    todoStat()
+import TodoList from './TodoLists.js'
+export default class UndoRedoClass {
+    constructor(){
+        this.undoRedo_Max = 5
+    }
+   Undo(){
+    let tasks_current = JSON.parse(localStorage.getItem('tasks_current')) ? JSON.parse(localStorage.getItem('tasks_current')) : []
+    let tasks_undo = JSON.parse(localStorage.getItem('tasks_undo')) ? JSON.parse(localStorage.getItem('tasks_undo')) : []
+    let tasks_redo = JSON.parse(localStorage.getItem('tasks_redo')) ? JSON.parse(localStorage.getItem('tasks_redo')) : []
+    if(tasks_undo && tasks_undo.length>0){
+      //unshift add new items to the beginning of an array 
+      //Add a tasks_redo to save temporary data in localstorag when click undo button
+      tasks_redo.unshift(tasks_current);
+      tasks_redo.length = Math.min(tasks_redo.length,this.undoRedo_Max)
+      localStorage.setItem('tasks_redo', JSON.stringify(tasks_redo));
 
-    if(NewTasksTemporary.length == newTasks.length){
-        document.getElementById('undo').disabled = true
+      //update a current tasks  with the first  ellement off  (tasks_undo)=>(index0)
+      tasks_current.length = 0;
+      tasks_undo[0].push.apply(tasks_current, tasks_undo[0]);
+      localStorage.setItem('tasks_current', JSON.stringify(tasks_undo[0]));
+
+      //remove the first element of (tasks_undo)
+      tasks_undo.splice(0, 1)
+      localStorage.setItem('tasks_undo', JSON.stringify(tasks_undo))
+      TodoList()
       }
- }
-
-export  function redo(){
-    let tasks = JSON.parse(localStorage.getItem('TASKS')) ? JSON.parse(localStorage.getItem('TASKS')) : []
-    let newTasks = JSON.parse(localStorage.getItem('NewTasks')) ? JSON.parse(localStorage.getItem('NewTasks')) :[]
-    tasks.unshift({
-      name : newTasks[0].name, 
-      date : newTasks[0].date, 
-      time : newTasks[0].time, 
-      isImportant : newTasks[0].isImportant, 
-      status : newTasks[0].status, 
-    })
-    localStorage.setItem('TASKS', JSON.stringify(tasks))
-    newTasks.splice(0,1)
-    localStorage.setItem('NewTasks', JSON.stringify(newTasks))
-    todoStat()  
-    if(JSON.parse(localStorage.getItem('NewTasks')).length == 0){
-        document.getElementById('redo').disabled = true
-        document.getElementById('undo').disabled = false
+    else{
+      alert('There is no other data')
     }
 }
+       
+  Redo(){
+    let tasks_current = JSON.parse(localStorage.getItem('tasks_current')) ? JSON.parse(localStorage.getItem('tasks_current')) : []
+    let tasks_undo = JSON.parse(localStorage.getItem('tasks_undo')) ? JSON.parse(localStorage.getItem('tasks_undo')) : []
+    let tasks_redo = JSON.parse(localStorage.getItem('tasks_redo')) ? JSON.parse(localStorage.getItem('tasks_redo')) : []
+    
+    if(tasks_redo && tasks_redo.length>0){
+      //unshift add new items to the beginning of an array 
+      //Add a tasks_redo to save temporary data in localstorag when click redo button
+      tasks_undo.unshift(tasks_current);
+      tasks_undo.length = Math.min(tasks_undo.length,this.undoRedo_Max)
+      localStorage.setItem('tasks_undo', JSON.stringify(tasks_undo));
 
+      //update a current tasks  with the first  ellement off  (tasks_redo)=>(index0)
+      tasks_current.length = 0;
+      tasks_redo[0].push.apply(tasks_current, tasks_redo[0]);
+      localStorage.setItem('tasks_current', JSON.stringify(tasks_redo[0]));
 
- 
+      //remove the first element of (tasks_redo)
+      tasks_redo.splice(0, 1)
+      localStorage.setItem('tasks_redo', JSON.stringify(tasks_redo))
+      TodoList()
+      }
+    else{
+      alert('There is no other data')
+      
+    }
+  }
+}

@@ -6,7 +6,6 @@
     <title>todo_list_es6</title>
 </head>
 <body>
-    <style>.btn[disabled]{cursor: not-allowed}</style>
     <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
         <div class="container">
             <a class="navbar-brand" href="#">Todo List ES6</a>
@@ -15,16 +14,17 @@
     <div class="container">
         <div class="row justify-content-center" style="margin-top:100px">
             <div class="col-md-10">
-                <button class="btn btn-primary" id="undo" onclick="undo()"><<</button>
-                <button class="btn btn-primary" id="redo" onclick="redo()">>></button>
+                <button class="btn btn-primary" onclick="UndoRedo.Undo()" id="undo"><<</button>
+                <button class="btn btn-primary" onclick="UndoRedo.Redo()" id="redo">>></button>
                 <hr>
+               
                 <form id="myForm" onsubmit="event.preventDefault()">
                     <div class="input-group">
                         <input type="text" id="name" class="form-control" placeholder="Enter new task">
                         <input type="date" id="date" class="form-control">
                         <input type="time" id="time" class="form-control col-md-2">
                         <div class="input-group-append">
-                            <button class="btn btn-primary" onclick=toDo.addTodo(event)>
+                            <button class="btn btn-primary" onclick=Todo.create(event)>
                                 + Add
                             </button>
                         </div>
@@ -32,8 +32,8 @@
                     <p id="errMessage" class="text-danger"></p>
                 </form>
                 <p id="count"></p>
-                 <table class="table table-bordered table-inverse mt-2">
-                     <thead class="thead-light">
+                 <table class="table table-bordered table-striped table-hover table-inverse mt-2">
+                     <thead>
                          <tr>
                              <th width="15%">Is important</th>
                              <th>Name</th>
@@ -43,7 +43,7 @@
                              <th width="5%">Actions</th>
                          </tr>
                          </thead>
-                         <tbody id="taskList"></tbody>
+                         <tbody id="todoList"></tbody>
                  </table>
             </div>
         </div>
